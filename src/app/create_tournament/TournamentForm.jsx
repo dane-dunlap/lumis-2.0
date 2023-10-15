@@ -10,6 +10,7 @@ export default function TournamentForm({ session }) {
   const [tournament_level,setTournamentLevel] = useState(null)
   const [club_name,setClubName] = useState(null)
   const user = session?.user
+  const club_id = user?.id
   
   
 
@@ -44,13 +45,13 @@ export default function TournamentForm({ session }) {
   
   console.log(club_name)
 
-  async function createTournament({ tournament_name, tournament_prize, tournament_level }) {
+  async function createTournament({ tournament_name, tournament_prize, tournament_level, club_id }) {
     try {
         setLoading(true)
         const { data, error } = await supabase
         .from('tournaments')
         .insert([
-        { tournament_name: tournament_name, tournament_prize: tournament_prize, tournament_level: tournament_level},
+        { tournament_name: tournament_name, tournament_prize: tournament_prize, tournament_level: tournament_level,club_id: club_id },
         ])
         .select()
     
@@ -102,7 +103,7 @@ export default function TournamentForm({ session }) {
       <div>
         <button
           className="button primary block"
-          onClick={() => createTournament({ tournament_name, tournament_prize, tournament_level })}
+          onClick={() => createTournament({ tournament_name, tournament_prize, tournament_level,club_id})}
           disabled={loading}
         >
           {loading ? 'Loading ...' : 'Update'}
