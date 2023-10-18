@@ -11,4 +11,6 @@ export default async function Account() {
   } = await supabase.auth.getSession()
 
   return <AccountForm session={session} />
+
+  
 }

@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import TournamentCard from '../components/TournamentCard';  // Ensure path is correct
 import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link'
+import LogoutButton from '../components/LogOut';
+import NewTournamentCard from '../components/NewTournamentCard';
 
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL; 
@@ -11,29 +13,52 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function Tournaments() {
   const [tournaments, setTournaments] = useState([]);
+  const [levelFilter, setLevelFilter] = useState("");
 
-  async function get_tournaments() {
+
+  async function get_tournaments(level) {
     try {
-      const { data, error } = await supabase
-        .from('tournaments')
-        .select('*');
-      if (error) throw error;  // Ensure error is thrown if fetch fails
-      setTournaments(data);    // Update state with fetched data
+        let query = supabase.from('tournaments').select(`*,profiles:club_id (club_name)`);
+        if (level) query = query.eq('tournament_level', level);
+        const { data, error } = await query;
+        if (error) throw error;
+        setTournaments(data);
     } catch (error) {
-      console.error('Error fetching tournaments:', error);
+        console.error('Error fetching tournaments:', error);
     }
-  }
+}
 
-  useEffect(() => {
-    get_tournaments();
-  }, []);
+useEffect(() => {
+    get_tournaments(levelFilter);
+}, [levelFilter]);
 
   return (
+    
+    
     <div>
-     
+      <LogoutButton />
+     <div>
+    <label htmlFor="levelFilter">Level: </label>
+    <select 
+        name="levelFilter" 
+        value={levelFilter}
+        onChange={(e) => setLevelFilter(e.target.value)}
+    >
+        <option value="">All</option>
+        <option value="C">C</option>
+        <option value="C+">C+</option>
+        <option value="Open C">Open C</option>
+        {/* Additional options as needed */}
+    </select>
+    </div>
+
       {tournaments.map((tournament, index) => (
       <Link href={`/tournaments/${tournament.id}`} key={index}>
+        
         <TournamentCard key={index} tournament={tournament} />
+        <NewTournamentCard/>
+        
+
         </Link>
       ))}
     </div>

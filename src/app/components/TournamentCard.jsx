@@ -14,6 +14,9 @@ export default function TournamentCard({ tournament }) {
         <span className="text-white bg-gray-400 rounded-full py-1 px-3 inline-block">
           Prize: ${tournament.tournament_prize}
         </span>
+        <span className="text-white bg-gray-400 rounded-full py-1 px-3 inline-block">
+          Club: {tournament.profiles.club_name}
+        </span>
       </div>
     </div>
   );
