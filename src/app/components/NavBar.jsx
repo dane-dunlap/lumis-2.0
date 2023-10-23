@@ -11,6 +11,8 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import { ModeToggle } from '../../../@/components/ui/toggle-mode'
+
 
 const products = [
   { name: 'All Tournaments', description: 'View all tournaments', href: '/tournaments', icon: ChartPieIcon },
@@ -109,6 +111,11 @@ export default function NavBar() {
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             
           </a>
+          <ModeToggle />
+
+          
+
+        
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">

@@ -4,7 +4,8 @@ import TournamentCard from '../components/TournamentCard';  // Ensure path is co
 import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link'
 import LogoutButton from '../components/LogOut';
-import NewTournamentCard from '../components/NewTournamentCard';
+import { Button } from "@/components/ui/button"
+
 
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL; 
@@ -56,7 +57,8 @@ useEffect(() => {
       <Link href={`/tournaments/${tournament.id}`} key={index}>
         
         <TournamentCard key={index} tournament={tournament} />
-        <NewTournamentCard/>
+        <Button>Click me</Button>
+
         
 
         </Link>
