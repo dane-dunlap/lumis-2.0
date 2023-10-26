@@ -1,4 +1,7 @@
+
+'use client'
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { Button } from "@/components/ui/button";
 
 function LogoutButton() {
   // instantiate supabase client
@@ -17,7 +20,10 @@ function LogoutButton() {
   };
 
   return (
-    <button onClick={handleLogout}>Logout</button>
+    <div>
+    <Button onClick={handleLogout}>Logout</Button>
+    </div>
+
   );
 }
 

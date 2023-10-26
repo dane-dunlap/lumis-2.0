@@ -5,6 +5,16 @@ import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link'
 import LogoutButton from '../components/LogOut';
 import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Gauge,Trophy,MapPin } from 'lucide-react';
+
 
 
 
@@ -37,7 +47,7 @@ useEffect(() => {
     
     
     <div>
-      <LogoutButton />
+      
      <div>
     <label htmlFor="levelFilter">Level: </label>
     <select 
@@ -52,17 +62,38 @@ useEffect(() => {
         {/* Additional options as needed */}
     </select>
     </div>
+    <div className="flex flex-wrap justify-start">
+  {tournaments.map((tournament, index) => (
+    <Link href={`/tournaments/${tournament.id}`} key={index}>
+      <Card className="m-3 rounded-2xl w-[320px]">
+        <CardHeader>
+          <img
+            src={tournament.tournament_image}
+            alt="Card Image"
+            className="rounded-2xl w-full h-[200px] object-cover"
+          />
+          <CardTitle>{tournament.tournament_name}</CardTitle>
+          <CardDescription>Wednesday May 4th 2023</CardDescription>
+        </CardHeader>
 
-      {tournaments.map((tournament, index) => (
-      <Link href={`/tournaments/${tournament.id}`} key={index}>
-        
-        <TournamentCard key={index} tournament={tournament} />
-        <Button>Click me</Button>
+        <CardContent>
+          <p className="flex items-center space-x-2">
+            <Gauge/> 
+            <span>{tournament.tournament_level}</span>
+          </p>
+          <p className="flex items-center space-x-2">
+            <Trophy/> 
+            <span>{tournament.tournament_prize}</span>
+          </p>
+          <p className="flex items-center space-x-2">
+            <MapPin/> 
+            <span>Just Padel</span>
+          </p>
+        </CardContent>
 
-        
-
-        </Link>
-      ))}
-    </div>
-  );
-}
+       
+      </Card>
+    </Link>
+  ))}
+</div>
+</div>)}
