@@ -3,11 +3,15 @@
 var store = require('app-store-scraper');
 
 
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
  
-export async function GET() {
+export async function GET(request,params) {
+    const {searchParams} = new URL(request.url);
+    const term = searchParams.get('term');
+    console.log(term)
+
     const results = await store.search({
-        term: 'Stake',
+        term: term,
         num: 10,
         page: 1
     })
