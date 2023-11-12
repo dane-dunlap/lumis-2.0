@@ -1,5 +1,5 @@
 'use client'
-import { useState,useEffect } from "react"
+import { useState,useEffect, useCallback } from "react"
 import { Input } from "../../../@/components/ui/input";
 import { Button } from "../../../@/components/ui/button";
 import {
@@ -23,12 +23,19 @@ import {
     AlertDialogTrigger,
   } from "../../../@/components/ui/alert-dialog";
 import { checkAndInsertApp } from "../../../@/utils/createApp";
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+
+
 
 
 export default function SearchPage(){
+    const supabase = createClientComponentClient()
     const [apps,setApps] = useState([]);
     const [error,setError] = useState(null);
     const [appName,setAppName] = useState();
+    
+  
+
 
     const handleSubmit = async (event) => {        
         event.preventDefault();
@@ -51,6 +58,8 @@ export default function SearchPage(){
     };
 
     const handleCreateAlert = async (app) => {
+       
+        
         try {
             const appData = {
                 id:app.id,
@@ -61,6 +70,36 @@ export default function SearchPage(){
                 app_store_url:app.url
             }
             await checkAndInsertApp(appData)
+
+            const { data: { user } } = await supabase.auth.getUser()
+
+            const {data, error} = await supabase
+            .from("alerts")
+            .insert([{user_id:user.id,app_id:app.id}])
+            .single();
+
+            if (error) throw error;
+            console.log("Alert created",data)
+            fetch('/api/sendEmail', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  to: user.email,
+                  subject: app.title,
+                  text: app.releaseNotes,
+                }),
+              })
+              .then(response => response.json())
+              .then(data => {
+                // Handle the response
+              })
+              .catch(error => {
+                // Handle any errors
+              });
+
+            
         } catch (error) {
             setError(error.message)
         }

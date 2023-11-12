@@ -41,7 +41,6 @@ export function UserSignupForm({ className, ...props }) {
     console.log('Submitted:', { email, password })
   };
 
-
   
 
   return (
