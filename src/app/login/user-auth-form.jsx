@@ -44,8 +44,9 @@ export function UserAuthForm({ className, ...props }) {
         email: email,
         password: password,
     })
-    router.push('/');
-  }
+    router.push('/')
+}
+  
 
   
 

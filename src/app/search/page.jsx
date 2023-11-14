@@ -24,6 +24,8 @@ import {
   } from "../../../@/components/ui/alert-dialog";
 import { checkAndInsertApp } from "../../../@/utils/createApp";
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { BellRing } from 'lucide-react';
+
 
 
 
@@ -106,61 +108,62 @@ export default function SearchPage(){
 
     }
     return (
-        <div className="px-4 sm:px-6 lg:px-8">
-            <form onSubmit={handleSubmit}>
-                <Label htmlFor="appName">Search for an app</Label>
-                <Input
-                id="appName"
-                value={appName}
-                placeholder ="Enter app name"
-                onChange={(e)=> setAppName(e.target.value)}
-                className = "w-[200px]"
-                />
-                <Button type ="submit">Search</Button>
-            </form>
-        
-           
-            <div className="flex flex-wrap justify-start">
-            {apps.map(app =>(
-                <Card className="m-3 rounded-2xl w-[200px] border-none shadow-none">
-                    <CardHeader>
-                    </CardHeader>
-                    <CardContent>
-                    <img
-                        className="rounded-3xl"
-                        src = {app.icon}
+        <div>
+            <div className="mt-8 flex justify-center">
+                <form onSubmit={handleSubmit} className="w-full max-w-xs flex flex-col items-center gap-4">
+                    
+                        <Label htmlFor="appName" className="text-2xl font-bold text-gray-700">
+                            Search for an app
+                        </Label>
+                        <Input
+                            id="appName"
+                            value={appName}
+                            placeholder="Enter app name"
+                            onChange={(e) => setAppName(e.target.value)}
+                            className="w-full sm:w-[200px] shadow-sm block sm:text-sm rounded-md"
                         />
-                   
-                    <CardDescription className="text-sm text-foreground">{app.title}</CardDescription>
-                    <CardDescription className="text-xs text-muted-foreground">{app.developer}</CardDescription>
-                    <AlertDialog>
-                <AlertDialogTrigger>Set up alert</AlertDialogTrigger>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                    <AlertDialogTitle>Set up an alert for {app.title}?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                        You will be sent an email with release notes every time they release a new version of their app
-                    </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    
-                    <AlertDialogAction onClick={() => handleCreateAlert(app)}>Create Alert</AlertDialogAction>
-                    
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
-                    </CardContent>
-                   
-                </Card>
-                
-        
-            ))}
-            
+                        <Button type="submit">
+                            Search
+                        </Button>
+                </form>
+            </div>
+            <div className="flex justify-center">
+                    <div className="mt-6 flex flex-wrap mx-9">
+                        {apps.map(app => (
+                            <div className="m-3">
+                                <Card className="rounded-2xl w-[200px] border-none shadow-none">
+                                    <CardHeader>
+                                        
+                                    </CardHeader>
+                                    <AlertDialog>
+                                        <AlertDialogTrigger><BellRing /></AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Set up an alert for {app.title}?</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    You will be sent an email with release notes every time they release a new version of their app
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction onClick={() => handleCreateAlert(app)}>Create Alert</AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+                                    <CardContent>
+                                        <img
+                                            className="rounded-3xl"
+                                            src={app.icon}
+                                        />
+                                        <CardDescription className="text-sm text-foreground">{app.title}</CardDescription>
+                                        <CardDescription className="text-xs text-muted-foreground">{app.developer}</CardDescription>
+                                    </CardContent>
+                                </Card>
+                            </div>
+                            
+                        ))}
+                    </div>
             </div>
         </div>
-    )
-
-}
-
-
+        );
+} 

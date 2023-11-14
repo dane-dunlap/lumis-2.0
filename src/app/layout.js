@@ -1,5 +1,4 @@
 import './globals.css'
-import NavBar from './components/navbar'
 import { Inter } from "next/font/google"
 import { Button } from "@/components/ui/button"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -52,17 +51,17 @@ export default async function RootLayout({ children }) {
         >
         
         <NavigationMenu>
-          <NavigationMenuList>
+          <NavigationMenuList className="mt-4 ml-2">
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
               {!user && <Link href="/signup"><Button>Sign up</Button></Link>}
-              {user ? <LogoutButton /> : <Link href="/login"><Button variant="secondary" size="default">Login</Button></Link>}
-              <ModeToggle/>
-              
-              <NavigationMenuContent>
-                <NavigationMenuLink>Link</NavigationMenuLink>
-              </NavigationMenuContent>
             </NavigationMenuItem>
+            <NavigationMenuItem>
+              {user ? <LogoutButton /> : <Link href="/login"><Button variant="secondary" size="default">Login</Button></Link>}
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <ModeToggle/>
+            </NavigationMenuItem>
+    
           </NavigationMenuList>
         </NavigationMenu>
         
