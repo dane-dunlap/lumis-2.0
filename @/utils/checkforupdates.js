@@ -57,7 +57,7 @@ export async function checkforupdates(){
 
 
             try {
-                const response = await fetch("https://lumis-2-0.vercel.app//api/sendEmail", {
+                const response = await fetch("https://lumis-2-0.vercel.app/api/sendEmail", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
