@@ -130,7 +130,7 @@ export default function SearchPage(){
             <div className="flex justify-center">
                     <div className="mt-6 flex flex-wrap mx-9">
                         {apps.map(app => (
-                            <div className="m-3">
+                            <div key={app.app_id} className="m-3">
                                 <Card className="rounded-2xl w-[200px] border-none shadow-none">
                                     <CardHeader>
                                         
