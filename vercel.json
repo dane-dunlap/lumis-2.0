@@ -1,6 +1,6 @@
 {
     "crons": [{
       "path": "/api/checkforupdates",
-      "schedule": "45 * * * *"
+      "schedule": "50 * * * *"
     }]
   }
