@@ -1,8 +1,8 @@
 import { checkforupdates } from '@/utils/checkforupdates';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req) {
-    if (req.method === 'POST') {
+export async function GET(req) {
+    if (req.method === 'GET') {
         try {
             console.log("api for checking updates being hit")
             const results = await checkforupdates();
