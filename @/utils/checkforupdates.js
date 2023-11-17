@@ -36,6 +36,8 @@ export async function checkforupdates(){
 
         const appTitle = app_data.app_name;
         const release_notes = app_data.release_notes;
+        const current_version = app_data.current_version;
+        const id = app_data.app_id
       
 
 
@@ -57,7 +59,7 @@ export async function checkforupdates(){
 
 
             try {
-                const response = await fetch("https://lumis-2-0.vercel.app/api/sendEmail", {
+                const response = await fetch(`${baseUrl}/api/sendEmail`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -70,7 +72,16 @@ export async function checkforupdates(){
                 });
             
                 const responseData = await response.json();
-                console.log("Response Data:", responseData);
+                console.log("email rsponse data:", responseData);
+                //update the last_sent here
+                //then update the app table with the most recent release
+                console.log(app_data.current_version)
+                const { data:updated_version, error } = await supabase
+                .from('apps')
+                .update({ current_version: app_data.current_version })
+                .eq('app_id',app_data.app_id )
+                
+
             } catch (error) {
                 console.error("Error sending email for app_id:", app_id, error);
             }
