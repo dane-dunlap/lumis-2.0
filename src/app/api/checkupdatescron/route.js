@@ -1,29 +1,32 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
+
 
 export async function GET(req) {
     if (req.method === 'GET') {
         try {
-            const response = await fetch("http://localhost:3000/api/checkforupdates", {
+            const url = 'http://localhost:3000/api/checkforupdates';
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type':'application/json',
-                }
+                    'Content-Type': 'application/json',
+                },
             });
 
-            // If the status code is successful, return a success response
-            if (response.ok) {
-                return NextResponse.json({ status: 'success' }, { status: 200 });
+            // Log the raw response for debugging
+            const rawResponse = await response.text();
+            console.log("Raw response from checkforupdates:", rawResponse);
+
+            if (response.ok && rawResponse) {
+                const responseData = JSON.parse(rawResponse);
+                return new NextResponse(JSON.stringify(responseData), { status: response.status });
             } else {
-                // If there was an error with the request, return the error status code
-                return NextResponse.json({ error: 'Error from checkforupdates API' }, { status: response.status });
+                return new NextResponse(JSON.stringify({ error: 'Invalid response from checkforupdates' }), { status: 500 });
             }
+        } catch (error) {
+            console.error('Error in GET API:', error);
+            return new NextResponse(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
         }
-        catch (error) {
-            console.error("Error in cron api:", error);
-            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-        }
-    }
-    else {
-        return NextResponse.rewrite(new URL('/404', req.url));
+    } else {
+        return new NextResponse(null, { status: 405 });
     }
 }

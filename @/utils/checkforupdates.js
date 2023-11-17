@@ -11,17 +11,21 @@ const supabase = createClient(
 
 export async function checkforupdates(){
 
-
+//gets all apps
     let {data, error} = await supabase
     .from('apps')
     .select("*")
-
+//creates an empty dictionary
     let appsWithNewVersions = {};
-
+// loops through each app in db and fetches most recent app data
     for (const app of data) {
         const app_details = await getAppDetails(app.app_id)
         if (app_details.version != app.current_version){
             appsWithNewVersions[app.app_id] = app_details.version;
+            await supabase
+            .from('apps')
+            .update({ current_version: app_details.version })
+            .eq('app_id',app.app_id )
         }
         
     }
@@ -30,14 +34,12 @@ export async function checkforupdates(){
         //we first need to get all the app data with the associated app ids
         let {data:app_data,error:appError} = await supabase
         .from('apps')
-        .select('app_name,release_notes')
+        .select('*')
         .eq('app_id',app_id)
         .single();
 
         const appTitle = app_data.app_name;
         const release_notes = app_data.release_notes;
-        const current_version = app_data.current_version;
-        const id = app_data.app_id
       
 
 
@@ -73,13 +75,14 @@ export async function checkforupdates(){
             
                 const responseData = await response.json();
                 console.log("email rsponse data:", responseData);
-                //update the last_sent here
-                //then update the app table with the most recent release
-                console.log(app_data.current_version)
-                const { data:updated_version, error } = await supabase
-                .from('apps')
-                .update({ current_version: app_data.current_version })
-                .eq('app_id',app_data.app_id )
+                
+               await supabase
+               .from('alerts')
+               .update({ sent_at: new Date().toISOString() })
+               .eq('alert_id',alert.alert_id)
+
+                
+
                 
 
             } catch (error) {
@@ -88,8 +91,12 @@ export async function checkforupdates(){
 
         }
         
+        
     }
     
+    return appsWithNewVersions || {};
+
+
 
 }
 
