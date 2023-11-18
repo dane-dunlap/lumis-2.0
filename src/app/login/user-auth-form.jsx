@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import { cn } from "@/lib/utils";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
@@ -44,8 +43,14 @@ export function UserAuthForm({ className, ...props }) {
         email: email,
         password: password,
     })
-    router.push('/')
-}
+    if (data) {
+      // Redirect and reload
+      window.location.href = '/search';
+  } else {
+      // Handle error
+      console.error(error);
+  }
+};
   
 
   

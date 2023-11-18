@@ -39,6 +39,12 @@ export default async function RootLayout({ children }) {
     data: { session },
   } = await supabase.auth.getSession()
   const user = session?.user
+
+  let { data:email, error, status } = await supabase
+  .from('profiles')
+  .select(`email`)
+  .eq('id', user?.id)
+  .single()
   
   return (
     <html lang="en">
@@ -60,6 +66,9 @@ export default async function RootLayout({ children }) {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <ModeToggle/>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+             {user ? <p>Logged in as: {email.email}</p>:<p></p>}
             </NavigationMenuItem>
     
           </NavigationMenuList>

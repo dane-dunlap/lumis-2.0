@@ -15,7 +15,9 @@ function LogoutButton() {
       // You can show some feedback to the user here if needed.
     } else {
       console.log('User signed out successfully.');
-      // Redirect to home page or show some feedback to the user.
+     
+        window.location.href = '/';
+
     }
   };
 
