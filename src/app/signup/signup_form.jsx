@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/ui/icons";
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+
 export function UserSignupForm({ className, ...props }) {
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -34,7 +36,7 @@ export function UserSignupForm({ className, ...props }) {
         email,
         password,
         options: {
-          emailRedirectTo: `${location.origin}/auth/callback`,
+          emailRedirectTo: `${baseUrl}/auth/callback`,
         },
      })
 
