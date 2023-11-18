@@ -41,7 +41,7 @@ export function UserSignupForm({ className, ...props }) {
         email,
         password,
         options: {
-          emailRedirectTo: `${baseUrl}/auth/callback`,
+          emailRedirectTo: "https://lumis-2-0.vercel.app/auth/callback",
         },
      })
 
