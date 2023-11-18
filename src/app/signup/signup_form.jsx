@@ -30,6 +30,11 @@ export function UserSignupForm({ className, ...props }) {
   
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
+
+    setTimeout(()=> {
+      setIsLoading(false);
+    },2000);
 
     // sends a sign up request to supabase email provider
     await supabase.auth.signUp({

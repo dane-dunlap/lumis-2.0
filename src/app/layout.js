@@ -67,9 +67,7 @@ export default async function RootLayout({ children }) {
             <NavigationMenuItem>
               <ModeToggle/>
             </NavigationMenuItem>
-            <NavigationMenuItem>
-             {user ? <p>Logged in as: {email.email}</p>:<p></p>}
-            </NavigationMenuItem>
+
     
           </NavigationMenuList>
         </NavigationMenu>
