@@ -108,11 +108,12 @@ export default function SearchPage(){
 
     }
     return (
-        <div>
+        <div className="mt-4">
+            <p>My alerts</p>
             <div className="mt-8 flex justify-center">
                 <form onSubmit={handleSubmit} className="w-full max-w-xs flex flex-col items-center gap-4">
                     
-                        <Label htmlFor="appName" className="text-2xl font-bold text-gray-700">
+                        <Label htmlFor="appName" className="text-2xl font-bold">
                             Search for an app
                         </Label>
                         <Input
@@ -128,7 +129,7 @@ export default function SearchPage(){
                 </form>
             </div>
             <div className="flex justify-center">
-                    <div className="mt-6 flex flex-wrap mx-9">
+                    <div className="mt-6 flex flex-wrap justify-center mx-9">
                         {apps.map(app => (
                             <div key={app.app_id} className="m-3">
                                 <Card className="rounded-2xl w-[200px] border-none shadow-none">

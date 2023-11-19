@@ -15,19 +15,26 @@ export async function checkforupdates(){
     let {data, error} = await supabase
     .from('apps')
     .select("*")
+    
 //creates an empty dictionary
     let appsWithNewVersions = {};
 // loops through each app in db and fetches most recent app data
     for (const app of data) {
-        const app_details = await getAppDetails(app.app_id)
-        if (app_details.version != app.current_version){
-            appsWithNewVersions[app.app_id] = app_details.version;
-            await supabase
-            .from('apps')
-            .update({ current_version: app_details.version })
-            .eq('app_id',app.app_id )
+        try{
+            const app_details = await getAppDetails(app.app_id)
+            console.log(app_details.version)
+            if (app_details.version != app.current_version){
+                appsWithNewVersions[app.app_id] = app_details.version;
+                await supabase
+                .from('apps')
+                .update({ current_version: app_details.version })
+                .eq('app_id',app.app_id )
+            }
         }
-        
+        catch (error) {
+            console.error("Error fetching app details for app_id:",app.app_id,error)
+        }  
+
     }
 
     for (const app_id in appsWithNewVersions){
@@ -93,8 +100,13 @@ export async function checkforupdates(){
         
         
     }
+    if (Object.keys(appsWithNewVersions).length > 0) {
+        return appsWithNewVersions
+    }
+    else{
+        return "There were no apps with updates.";
+    }
     
-    return appsWithNewVersions || {};
 
 
 

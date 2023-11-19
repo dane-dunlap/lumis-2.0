@@ -36,7 +36,7 @@ export function UserAuthForm({ className, ...props }) {
 
     setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 2000);
   
       // sends a signIn request to supabase, authenticating the user
       const {data, error} = await supabase.auth.signInWithPassword({
