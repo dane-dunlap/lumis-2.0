@@ -13,25 +13,9 @@ export const metadata = {
   };
 
 export default function AuthenticationPage() {
-  
+
   return (
     <>
-      <div className="md:hidden">
-        <Image
-          src="/examples/authentication-light.png"
-          width={1280}
-          height={843}
-          alt="Authentication"
-          className="block dark:hidden"
-        />
-        <Image
-          src="/examples/authentication-dark.png"
-          width={1280}
-          height={843}
-          alt="Authentication"
-          className="hidden dark:block"
-        />
-      </div>
       <div className="flex flex-col items-center justify-center min-h-screen">
         
         
