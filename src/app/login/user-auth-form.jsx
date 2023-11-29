@@ -8,10 +8,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/ui/icons";
 import { useRouter } from 'next/navigation';
+import { useToast } from "../../../@/components/ui/use-toast";
 
 
 export function UserAuthForm({ className, ...props }) {
   const router = useRouter();
+  const { toast } = useToast()
 
 
   const [isLoading, setIsLoading] = React.useState(false);
@@ -43,12 +45,17 @@ export function UserAuthForm({ className, ...props }) {
         email: email,
         password: password,
     })
-    if (data) {
-      // Redirect and reload
-      window.location.href = '/search';
-  } else {
+    if (error) {
       // Handle error
+      toast({title:"There was an error logging in",variant:"destructive"})
       console.error(error);
+      
+  } else {
+      // Redirect and reload
+      toast({title:"Login Successful"})
+      window.location.href = '/search';
+
+
   }
 };
   

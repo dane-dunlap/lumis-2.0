@@ -26,8 +26,6 @@ import { checkAndInsertApp } from "../../../@/utils/createApp";
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { BellRing } from 'lucide-react';
 import Link from 'next/link'
-import { useToast } from "@/components/ui/use-toast"
-
 
 
 
@@ -38,9 +36,6 @@ export default function SearchPage(){
     const [apps,setApps] = useState([]);
     const [error,setError] = useState(null);
     const [appName,setAppName] = useState();
-    const { toast } = useToast()
-
-    
 
     
   
@@ -87,12 +82,8 @@ export default function SearchPage(){
             .insert([{user_id:user.id,app_id:app.id}])
             .single();
 
-            if (error){
-                toast({title: "Error creating alert",variant:"destructive"})
-                throw error;
-            } 
+            if (error) throw error;
             console.log("Alert created",data)
-            toast({title: "Alert Successfully Created",description:"You will receive an email with the apps latest release notes"})
             fetch('/api/sendEmail', {
                 method: 'POST',
                 headers: {
@@ -122,61 +113,58 @@ export default function SearchPage(){
         <div className="mt-4">
 
             <div className="mt-8 flex justify-center">
-                <form onSubmit={handleSubmit} className="w-full max-w-lg flex flex-col items-center gap-4">
+                <form onSubmit={handleSubmit} className="w-full max-w-xs flex flex-col items-center gap-4">
                     
                         <Label htmlFor="appName" className="text-2xl font-bold">
-                            Create an alert
+                            Search for an app
                         </Label>
-                        <p className="text-gray-500 text-center">Create an alert for any app on the app store and get emailed the release notes every time they publish a new version of their app</p>
                         <Input
                             id="appName"
                             value={appName}
-                            placeholder="Search for an app"
+                            placeholder="Enter app name"
                             onChange={(e) => setAppName(e.target.value)}
-                            className="w-full sm:w-lg shadow-sm block sm:text-sm rounded-md"
+                            className="w-full sm:w-[200px] shadow-sm block sm:text-sm rounded-md"
                         />
                         <Button type="submit">
                             Search
                         </Button>
                 </form>
             </div>
-            <div className="flex justify-center">
-                    <div className="mt-6 flex flex-wrap justify-center mx-9">
-                        {apps.map(app => (
-                            <div key={app.app_id} className="m-3">
-                                <Card className="rounded-2xl w-[200px] border-none shadow-none">
-                                    <CardHeader>
-                                        
-                                    </CardHeader>
-                                    <AlertDialog>
-                                        <AlertDialogTrigger><BellRing /></AlertDialogTrigger>
-                                        <AlertDialogContent>
-                                            <AlertDialogHeader>
-                                                <AlertDialogTitle>Set up an alert for {app.title}?</AlertDialogTitle>
-                                                <AlertDialogDescription>
-                                                    You will be sent an email with release notes every time they release a new version of their app
-                                                </AlertDialogDescription>
-                                            </AlertDialogHeader>
-                                            <AlertDialogFooter>
-                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                <AlertDialogAction onClick={() => handleCreateAlert(app)}>Create Alert</AlertDialogAction>
-                                            </AlertDialogFooter>
-                                        </AlertDialogContent>
-                                    </AlertDialog>
-                                    <CardContent>
-                                        <img
-                                            className="rounded-3xl"
-                                            src={app.icon}
-                                        />
-                                        <CardDescription className="text-sm text-foreground">{app.title}</CardDescription>
-                                        <CardDescription className="text-xs text-muted-foreground">{app.developer}</CardDescription>
-                                    </CardContent>
-                                </Card>
-                            </div>
-                            
-                        ))}
+            <div className="mx-40">
+                <ul role="list" className="divide-y divide-gray-100">
+                {apps.map((app) => (
+                <li key={app.app_id} className="flex justify-between gap-x-6 py-5">
+                    <div className="flex min-w-0 gap-x-4">
+                    <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={app.icon} alt="" />
+                    <div className="min-w-0 flex-auto">
+                        <p className="text-sm font-semibold leading-6 text-gray-900">{app.title}</p>
+                        <p className="mt-1 truncate text-xs leading-5 text-gray-500">{app.releaseNotes}</p>
                     </div>
+                    </div>
+                    <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                    <AlertDialog>
+                        <AlertDialogTrigger><p className="text-sm leading-6 text-gray-900 underline">Create Alert</p></AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Set up an alert for {app.title}?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    You will be sent an email with release notes every time they release a new version of their app
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleCreateAlert(app)}>Create Alert</AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                    <p className="text-sm leading-6 text-gray-900">Check Reviews</p>
+                    </div>
+                </li>
+                ))}
+                </ul>
             </div>
         </div>
-        );
-} 
+                    );
+}
+
+

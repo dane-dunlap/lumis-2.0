@@ -1,6 +1,6 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from 'next/headers'
-import alertsList from "./alertsList";
+import AlertsList from "./alertsList";
 
 export default async function Alerts(){
     const cookieStore = cookies()
@@ -10,6 +10,6 @@ export default async function Alerts(){
         data: { session },
     } = await supabase.auth.getSession()
 
-    return <alertsList session={session} />
+    return <AlertsList session={session} />
 
 }

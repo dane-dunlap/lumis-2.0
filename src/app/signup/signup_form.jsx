@@ -8,10 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/ui/icons";
+import { useToast } from "../../../@/components/ui/use-toast";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
 export function UserSignupForm({ className, ...props }) {
+  const { toast } = useToast()
   const [isLoading, setIsLoading] = React.useState(false);
 
   const [email, setEmail] = useState('')
@@ -37,15 +39,26 @@ export function UserSignupForm({ className, ...props }) {
     },2000);
 
     // sends a sign up request to supabase email provider
-    await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${baseUrl}/auth/callback`,
-        },
-     })
+    try {
+      const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: `${baseUrl}/auth/callback`,
+          },
+      })
 
-    console.log('Submitted:', { email, password })
+      if (error){
+        throw error
+      }
+      toast({title:"A verification email has been sent", description: "Please verify your email to login"})
+      console.log('Submitted:', { email, password })
+    } 
+
+    catch (error) {
+      toast({title:"Error", description: "There was an error creating your account", variant:"destructive"})
+    
+    }
   };
 
   
@@ -86,9 +99,6 @@ export function UserSignupForm({ className, ...props }) {
             />
           </div>
           <Button disabled={isLoading}>
-            
-              
-
             Register now
           </Button>
         </div>

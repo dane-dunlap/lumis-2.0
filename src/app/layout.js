@@ -17,6 +17,8 @@ import { ModeToggle } from '@/components/ui/toggle-mode'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import Link from 'next/link';
+import { Toaster } from "@/components/ui/toaster"
+
 
 
 
@@ -61,11 +63,17 @@ export default async function RootLayout({ children }) {
             <NavigationMenuItem>
               {!user && <Link href="/signup"><Button>Sign up</Button></Link>}
             </NavigationMenuItem>
-            <NavigationMenuItem>
+            <NavigationMenuItem className="p-2">
               {user ? <LogoutButton /> : <Link href="/login"><Button variant="secondary" size="default">Login</Button></Link>}
             </NavigationMenuItem>
             <NavigationMenuItem>
               <ModeToggle/>
+            </NavigationMenuItem>
+            <NavigationMenuItem className="p-2">
+              {user ? <Link href="/search"><p className="underline">Create Alert</p></Link> :"" }
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              {user ? <Link href="/alerts"><p className="underline">My alerts</p></Link> :"" }
             </NavigationMenuItem>
 
     
@@ -76,6 +84,8 @@ export default async function RootLayout({ children }) {
         
         {children}
         </ThemeProvider>
+        <Toaster />
+
         
       </body>
       
