@@ -113,7 +113,7 @@ export default function SearchPage(){
         <div className="mt-4">
 
             <div className="mt-8 flex justify-center">
-                <form onSubmit={handleSubmit} className="w-full max-w-lg flex flex-col items-center gap-4">
+                <form onSubmit={handleSubmit} className="mx-4 sm:mx-10 md:mx-20 lg:mx-40 mt-6 w-full max-w-lg flex flex-col items-center gap-4">
                     
                 <h1 className="text-2xl font-semibold tracking-tight">
                         Create an alert
@@ -131,20 +131,25 @@ export default function SearchPage(){
                         </Button>
                 </form>
             </div>
-            <div className="mx-40 mt-6">
-                <ul role="list" className="divide-y divide-gray-100">
-                {apps.map((app) => (
-                <li key={app.app_id} className="flex justify-between gap-x-6 py-5">
-                    <div className="flex min-w-0 gap-x-4">
-                    <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={app.icon} alt="" />
-                    <div className="min-w-0 flex-auto">
-                        <p className="text-sm font-semibold leading-6 text-gray-900">{app.title}</p>
-                        <p className="mt-1 text-xs leading-5 text-gray-500">{app.releaseNotes}</p>
+            <div className="mx-4 sm:mx-10 md:mx-20 lg:mx-40 mt-6">
+    <ul role="list" className="divide-y divide-gray-100">
+        {apps.map((app) => (
+            <li key={app.app_id} className="py-5">
+                {/* Image, Title, and Release Notes */}
+                <div className="flex flex-col sm:flex-row justify-between">
+                    <div className="flex flex-col sm:flex-row items-start gap-x-4">
+                        <img className="h-12 w-12 flex-none rounded-full bg-gray-50 mb-2 sm:mb-0" src={app.icon} alt="" />
+                        <div className="min-w-0 flex-auto">
+                            <p className="text-sm font-semibold leading-6 text-gray-900">{app.title}</p>
+                            <p className="mt-1 text-xs leading-5 text-gray-500 max-w-[700px]">{app.releaseNotes}</p>
+                        </div>
                     </div>
-                    </div>
-                    <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+
+                    {/* Buttons: Create Alert and Check Reviews */}
+                    <div className="flex flex-row gap-x-4 sm:flex-col mt-2 sm:mt-0">
+
                     <AlertDialog>
-                        <AlertDialogTrigger><p className="text-sm leading-6 text-gray-900 underline">Create Alert</p></AlertDialogTrigger>
+                        <AlertDialogTrigger><p className="text-sm leading-6 text-gray-900 underline font-semibold">Create Alert</p></AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>
                                 <AlertDialogTitle>Set up an alert for {app.title}?</AlertDialogTitle>
@@ -158,12 +163,17 @@ export default function SearchPage(){
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>
-                    <p className="text-sm leading-6 text-gray-900">Check Reviews</p>
+                        <p className="text-sm leading-6 text-gray-900 underline">Check Reviews</p>
+
+
+                        
                     </div>
-                </li>
-                ))}
-                </ul>
-            </div>
+                </div>
+            </li>
+        ))}
+    </ul>
+</div>
+
         </div>
                     );
 }

@@ -124,10 +124,10 @@ export default function SearchPage(){
             <div className="mt-8 flex justify-center">
                 <form onSubmit={handleSubmit} className="w-full max-w-lg flex flex-col items-center gap-4">
                     
-                        <Label htmlFor="appName" className="text-2xl font-bold">
-                            Create an alert
-                        </Label>
-                        <p className="text-gray-500 text-center">Create an alert for any app on the app store and get emailed the release notes every time they publish a new version of their app</p>
+                        <h1 className="text-2xl font-semibold tracking-tight">
+                        Create an alert
+                         </h1>
+                        <p className="text-sm text-muted-foreground text-center">Create an alert for any app on the app store and get emailed the release notes every time they publish a new version of their app</p>
                         <Input
                             id="appName"
                             value={appName}

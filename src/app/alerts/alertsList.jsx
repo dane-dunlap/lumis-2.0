@@ -74,6 +74,9 @@ export default function AlertsList({ session }){
 
     return (
         <div className="flex flex-col justify-center items-center">
+            <h1 className="text-2xl font-semibold tracking-tight">
+            My Alerts
+            </h1>
       
             {alerts.map((alert, index) => (
                 <div key={index}>
