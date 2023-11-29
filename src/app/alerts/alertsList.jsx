@@ -73,38 +73,39 @@ export default function AlertsList({ session }){
     }, [supabase]);
 
     return (
+        
         <div className="flex flex-col justify-center items-center">
             <h1 className="text-2xl font-semibold tracking-tight">
             My Alerts
             </h1>
-      
-            {alerts.map((alert, index) => (
-                <div key={index}>
-                  
-                    
+            <div className="mx-4 sm:mx-10 md:mx-20 lg:mx-40 mt-6">
+                <ul role="list" className="divide-y divide-gray-100">
+                    {alerts.map((alert,index) => (
+                        <li key={index} className="py-5">
+                            {/* Image, Title, and Release Notes */}
+                            <div className="flex flex-col sm:flex-row justify-between">
+                                <div className="flex flex-col sm:flex-row items-start gap-x-4">
+                                    <img className="h-12 w-12 flex-none rounded-full bg-gray-50 mb-2 sm:mb-0" src={alert.app?.icon} alt="" />
+                                    <div className="min-w-0 flex-auto">
+                                        <p className="text-sm font-semibold leading-6 text-gray-900">{alert.app?.app_name}</p>
+                                        <p className="mt-1 text-xs leading-5 text-gray-500 max-w-[700px]">{alert.app?.release_notes}</p>
+                                    </div>
+                                </div>
 
-                    <Card className="rounded-2xl mx-auto s:w-[400px] md:w-[800px] lg:max-w-[1000px] mt-6 p-4">
-                        <CardTitle className="mt-2">
-                        {alert.app?.app_name}
-                        </CardTitle>
-                        <CardHeader>
-                        {alert.app?.current_version}          
-                        </CardHeader>
-                        <CardContent>
-                        {alert.app?.release_notes}
-                        
-                        <p className="mt-2">Last Sent at: {alert.sent_at}</p>
-                        </CardContent>
-                        <CardFooter>
-                        
-                        </CardFooter>
-                    </Card>
+                                {/* Buttons: Create Alert and Check Reviews */}
+                                <div className="flex flex-row gap-x-4 sm:flex-col mt-2 sm:mt-0">
+
+                                    <p className="text-sm leading-6 text-gray-900 underline">Delete Alert</p>
 
 
+                                    
+                                </div>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
 
-                    {/* Add more fields as needed */}
-                </div>
-            ))}
+            </div>
         </div>
     );
 }

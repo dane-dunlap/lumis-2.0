@@ -26,6 +26,7 @@ import { checkAndInsertApp } from "../../../@/utils/createApp";
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { BellRing } from 'lucide-react';
 import Link from 'next/link'
+import { useToast } from "../../../@/components/ui/use-toast";
 
 
 
@@ -36,6 +37,7 @@ export default function SearchPage(){
     const [apps,setApps] = useState([]);
     const [error,setError] = useState(null);
     const [appName,setAppName] = useState();
+    const { toast } = useToast()
 
     
   
@@ -71,7 +73,8 @@ export default function SearchPage(){
                 developer:app.developer,
                 release_notes:app.releaseNotes,
                 current_version:app.version,
-                app_store_url:app.url
+                app_store_url:app.url,
+                icon:app.icon
             }
             await checkAndInsertApp(appData)
 
@@ -84,6 +87,7 @@ export default function SearchPage(){
 
             if (error) throw error;
             console.log("Alert created",data)
+            toast({title:"Alert Succesfully Created",description:"You will receive an email now with the apps latest release notes"})
             fetch('/api/sendEmail', {
                 method: 'POST',
                 headers: {
@@ -132,50 +136,50 @@ export default function SearchPage(){
                 </form>
             </div>
             <div className="mx-4 sm:mx-10 md:mx-20 lg:mx-40 mt-6">
-    <ul role="list" className="divide-y divide-gray-100">
-        {apps.map((app) => (
-            <li key={app.app_id} className="py-5">
-                {/* Image, Title, and Release Notes */}
-                <div className="flex flex-col sm:flex-row justify-between">
-                    <div className="flex flex-col sm:flex-row items-start gap-x-4">
-                        <img className="h-12 w-12 flex-none rounded-full bg-gray-50 mb-2 sm:mb-0" src={app.icon} alt="" />
-                        <div className="min-w-0 flex-auto">
-                            <p className="text-sm font-semibold leading-6 text-gray-900">{app.title}</p>
-                            <p className="mt-1 text-xs leading-5 text-gray-500 max-w-[700px]">{app.releaseNotes}</p>
-                        </div>
-                    </div>
+                <ul role="list" className="divide-y divide-gray-100">
+                    {apps.map((app) => (
+                        <li key={app.app_id} className="py-5">
+                            {/* Image, Title, and Release Notes */}
+                            <div className="flex flex-col sm:flex-row justify-between">
+                                <div className="flex flex-col sm:flex-row items-start gap-x-4">
+                                    <img className="h-12 w-12 flex-none rounded-full bg-gray-50 mb-2 sm:mb-0" src={app.icon} alt="" />
+                                    <div className="min-w-0 flex-auto">
+                                        <p className="text-sm font-semibold leading-6 text-gray-900">{app.title}</p>
+                                        <p className="mt-1 text-xs leading-5 text-gray-500 max-w-[700px]">{app.releaseNotes}</p>
+                                    </div>
+                                </div>
 
-                    {/* Buttons: Create Alert and Check Reviews */}
-                    <div className="flex flex-row gap-x-4 sm:flex-col mt-2 sm:mt-0">
+                                {/* Buttons: Create Alert and Check Reviews */}
+                                <div className="flex flex-row gap-x-4 sm:flex-col mt-2 sm:mt-0">
 
-                    <AlertDialog>
-                        <AlertDialogTrigger><p className="text-sm leading-6 text-gray-900 underline font-semibold">Create Alert</p></AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>Set up an alert for {app.title}?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    You will be sent an email with release notes every time they release a new version of their app
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => handleCreateAlert(app)}>Create Alert</AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-                        <p className="text-sm leading-6 text-gray-900 underline">Check Reviews</p>
+                                <AlertDialog>
+                                    <AlertDialogTrigger><p className="text-sm leading-6 text-gray-900 underline font-semibold">Create Alert</p></AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Set up an alert for {app.title}?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                You will be sent an email with release notes every time they release a new version of their app
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction onClick={() => handleCreateAlert(app)}>Create Alert</AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+                                    <p className="text-sm leading-6 text-gray-900 underline">Check Reviews</p>
 
 
-                        
-                    </div>
-                </div>
-            </li>
-        ))}
-    </ul>
-</div>
+                                    
+                                </div>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
 
         </div>
-                    );
+);
 }
 
 

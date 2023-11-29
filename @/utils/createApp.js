@@ -22,7 +22,8 @@ export async function checkAndInsertApp(appdata) {
                      developer:appdata.developer,
                      release_notes:appdata.release_notes,
                     current_version:appdata.current_version,
-                app_store_url:appdata.app_store_url }])
+                    app_store_url:appdata.app_store_url,
+                    icon:appdata.icon }])
                 .single();
             
             console.log('Insert data:', insertData);
