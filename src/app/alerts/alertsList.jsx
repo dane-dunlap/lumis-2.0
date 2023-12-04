@@ -23,6 +23,18 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
+  import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from "../../../@/components/ui/alert-dialog";
+import { alertTitleClasses } from "@mui/material";
 
 export default function AlertsList({ session }){
     const supabase = createClientComponentClient()
@@ -72,6 +84,28 @@ export default function AlertsList({ session }){
         fetchAlerts();
     }, [supabase]);
 
+
+
+    const deleteAlert = async (alert_id)=> {
+
+        try{
+            let { error } = await supabase
+            .from('alerts')
+            .delete()
+            .eq("alert_id",alert_id)
+
+            const index = alerts.findIndex(alert => alert.alert_id ===alert_id)
+
+            const newAlerts = [...alerts.slice(0,index),...alerts.slice(index + 1)]
+
+            setAlerts(newAlerts)
+        }
+        catch (error)  {
+            console.log(error)
+        }
+    }
+
+    
     return (
         
         <div className="flex flex-col justify-center items-center">
@@ -85,18 +119,33 @@ export default function AlertsList({ session }){
                             {/* Image, Title, and Release Notes */}
                             <div className="flex flex-col sm:flex-row justify-between">
                                 <div className="flex flex-col sm:flex-row items-start gap-x-4">
-                                    <img className="h-12 w-12 flex-none rounded-full bg-gray-50 mb-2 sm:mb-0" src={alert.app?.icon} alt="" />
+                                    <a href={alert.app?.app_store_url} target="_blank">
+                                        <img className="h-12 w-12 flex-none rounded-full bg-gray-50 mb-2 sm:mb-0" src={alert.app?.icon} alt="" />
+                                    </a>
                                     <div className="min-w-0 flex-auto">
-                                        <p className="text-sm font-semibold leading-6 text-gray-900">{alert.app?.app_name}</p>
-                                        <p className="mt-1 text-xs leading-5 text-gray-500 max-w-[700px]">{alert.app?.release_notes}</p>
+                                        <p className="text-sm font-semibold leading-6">{alert.app?.app_name}</p>
+                                        <p className="mt-1 text-xs leading-5 text-muted-foreground max-w-[700px]">{alert.app?.current_version}</p>
+                                        <p className="mt-1 text-xs leading-5 text-muted-foreground max-w-[700px]">{alert.app?.release_notes}</p>
                                     </div>
                                 </div>
 
                                 {/* Buttons: Create Alert and Check Reviews */}
                                 <div className="flex flex-row gap-x-4 sm:flex-col mt-2 sm:mt-0">
-
-                                    <p className="text-sm leading-6 text-gray-900 underline">Delete Alert</p>
-
+                                <AlertDialog>
+                                    <AlertDialogTrigger><p className="text-sm leading-6 underline">Delete Alert</p></AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you sure you want to delete this alert?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                You will no longer receive email updates when this app releases new versions
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction variant="destructive" onClick={()=>deleteAlert(alert.alert_id)}>Delete Alert</AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
 
                                     
                                 </div>

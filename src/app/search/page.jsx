@@ -142,7 +142,9 @@ export default function SearchPage(){
                             {/* Image, Title, and Release Notes */}
                             <div className="flex flex-col sm:flex-row justify-between">
                                 <div className="flex flex-col sm:flex-row items-start gap-x-4">
-                                    <img className="h-12 w-12 flex-none rounded-full bg-gray-50 mb-2 sm:mb-0" src={app.icon} alt="" />
+                                    <a href={app.url} target="_blank">
+                                        <img className="h-12 w-12 flex-none rounded-full bg-gray-50 mb-2 sm:mb-0" src={app.icon} alt="" />
+                                    </a>
                                     <div className="min-w-0 flex-auto">
                                         <p className="text-sm font-semibold leading-6 text-gray-900">{app.title}</p>
                                         <p className="mt-1 text-xs leading-5 text-gray-500 max-w-[700px]">{app.releaseNotes}</p>

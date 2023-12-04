@@ -47,6 +47,7 @@ export async function checkforupdates(){
 
         const appTitle = app_data.app_name;
         const release_notes = app_data.release_notes;
+        const version = app_data.current_version;
       
 
 
@@ -77,6 +78,7 @@ export async function checkforupdates(){
                         to: profile.email,
                         subject: appTitle,
                         text: release_notes,
+                       
                     }),
                 });
             
